@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1528831106 source:c:\users\logan\desktop\cis2520\lab2\src\main.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/HashTableAPI.h"
+	"../include/main.h"
+
+1528592498 c:\users\logan\desktop\cis2520\lab2\include\hashtableapi.h
+	<stdio.h>
+	<stdlib.h>
+
+1528832125 source:c:\users\logan\desktop\cis2520\lab2\src\hashtableapi.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/HashTableAPI.h"
+
+1528661905 c:\users\logan\desktop\cis2520\lab2\include\main.h
+	<stdio.h>
+	<stdlib.h>
+
