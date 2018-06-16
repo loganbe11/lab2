@@ -4,9 +4,17 @@
 HTable *createTable(size_t size, int (*hashFunction)(size_t tableSize, int key),void (*destroyData)(void *data),void (*printData)(void *toBePrinted))
 {
 
-  HTable *hTable = malloc(sizeof(hTable)*1);
-  hTable->size=size;
-  hTable->table = malloc(sizeof(Node)*size);
+  HTable *hTable = malloc(sizeof(hTable)*1);  //allocate the memory for the table
+  hTable->size=size;                          //set the hash table size to size
+
+  hTable->table = malloc(sizeof(Node*)*size);  //allocate the memory for the array of node addresses
+
+  //make sure the node addresses are initialized to NULL
+  for (int i=0; i<size; i++)
+  {
+    hTable->table[i] = NULL;
+  }
+
   hTable->destroyData=destroyData;
   hTable->hashFunction=hashFunction;
   hTable->printData=printData;
@@ -32,21 +40,25 @@ Node *createNode(int key, void *data)
 *@pre Hash Table must exist.
 *@param hashTable pointer to hash table containing elements of data
 **/
-void destroyTable(HTable *hashTable){
-if (hashTable == NULL)
+void destroyTable(HTable *hashTable)
+{
+  if (hashTable == NULL)
   {
     return;
   }
   Node *nodeHolder;
-  for(size_t i = 0;i < hashTable->size;i++){
-  while(hashTable->table[i]!=NULL){
-    nodeHolder = hashTable->table[i];
-    hashTable->table[i] = hashTable->table[i]->next;
-    hashTable->destroyData(nodeHolder->data);
-    free(nodeHolder);
-  }
+  for(size_t i = 0; i < hashTable->size; i++)
+  {
+    while(hashTable->table[i]!=NULL)
+    {
+      nodeHolder = hashTable->table[i];
+      hashTable->destroyData(nodeHolder->data);
+      hashTable->table[i] = hashTable->table[i]->next;
+      free(nodeHolder);
+    }
   }
   //free the hashtable itself
+  free(hashTable->table);
   free(hashTable);
   return;
 
@@ -93,7 +105,8 @@ void insertData(HTable *hashTable, int key, void *data)
  *@param hashTable pointer to the hash table struct
  *@param key integer that represents a piece of data in the table (eg 35->"hello")
  **/
-void removeData(HTable *hashTable, int key){
+void removeData(HTable *hashTable, int key)
+{
   if (hashTable == NULL)
   {
     return;
@@ -102,31 +115,40 @@ void removeData(HTable *hashTable, int key){
   int tableNumber = hashTable->hashFunction(hashTable->size,key);
   Node *nodeToSearch = hashTable->table[tableNumber];
   Node *nodeToDelete;
-  if (nodeToSearch->next==NULL || nodeToSearch->key==key){
-    if (nodeToSearch->key==key){
+  if(nodeToSearch ==NULL)
+  {
+    return;
+  }
+  if (nodeToSearch->next==NULL || nodeToSearch->key==key)
+  {
+    if (nodeToSearch->key==key)
+    {
       hashTable->destroyData(nodeToSearch->data);
       hashTable->table[tableNumber]=nodeToSearch->next;
       free(nodeToSearch);
+      return;
     }
-    else{
-        return;
+    else
+    {
+      return;
     }
   }
   while(nodeToSearch->next->next!=NULL &&nodeToSearch->next->key!= key)
-    {
-      nodeToSearch = nodeToSearch->next;
-    }
-    if (nodeToSearch->next->key == key)
-    {
-      hashTable->destroyData(nodeToSearch->next->data);
-      nodeToDelete = nodeToSearch->next;
-      nodeToSearch->next = nodeToSearch->next->next;
-      free(nodeToDelete);
-    }
-    return;
+  {
+    nodeToSearch = nodeToSearch->next;
+  }
+  if (nodeToSearch->next->key == key)
+  {
+    hashTable->destroyData(nodeToSearch->next->data);
+    nodeToDelete = nodeToSearch->next;
+    nodeToSearch->next = nodeToSearch->next->next;
+    free(nodeToDelete);
+  }
+  return;
 }
 
-void *lookupData(HTable *hashTable, int key){
+void *lookupData(HTable *hashTable, int key)
+{
   if (hashTable == NULL)
   {
     return NULL;
@@ -134,18 +156,23 @@ void *lookupData(HTable *hashTable, int key){
 
   int tableNumber =  hashTable->hashFunction(hashTable->size,key);
   Node *nodeToSearch = hashTable->table[tableNumber];
-  while(nodeToSearch->next!=NULL &&nodeToSearch->key!= key)
-    {
-      nodeToSearch = nodeToSearch->next;
-    }
-    if (nodeToSearch->key == key)
-    {
-      return nodeToSearch->data;
-    }
-    else{
-      return NULL;
-    }
+  if(nodeToSearch==NULL)
+  {
     return NULL;
+  }
+  while(nodeToSearch->next!=NULL &&nodeToSearch->key!= key)
+  {
+    nodeToSearch = nodeToSearch->next;
+  }
+  if (nodeToSearch->key == key)
+  {
+    return nodeToSearch->data;
+  }
+  else
+  {
+    return NULL;
+  }
+  return NULL;
 
 }
 

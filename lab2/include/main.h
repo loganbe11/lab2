@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 int hashFunction(size_t tableSize, int key);
+void destroyData(void* data);
 
 
 #endif
