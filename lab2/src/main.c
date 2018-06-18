@@ -16,46 +16,37 @@ int main()
   char data3[] = "Testing";
   char data4[] = "is";
   char data5[] = "hard";
-  char data6[] = "      .";
+  char data6[] = "tester";
 
   printf("Creating hash table of size 17\n\n");
   HTable *hTable = createTable(17,hashFunction,destroyData,NULL);
 
   //insert some test data into the hash table
-  printf("Inserting key: %d(index: %d)\tdata: %s\n",key1,hashFunction(17,key1),data1);
+  printf("Inserting key: %d(index: %d)\tdata: %s\n",key1,hashFunction(17,key1),(char*)data1);
   insertData(hTable,key1,(void*)data1);
 
-  printf("Inserting key: %d(index: %d)\tdata: %s\n",key2,hashFunction(17,key2),data2);
+  printf("Inserting key: %d(index: %d)\tdata: %s\n",key2,hashFunction(17,key2),(char*)data2);
   insertData(hTable,key2,(void*)data2);
 
-  printf("Inserting key: %d(index: %d)\tdata: %s\n",key3,hashFunction(17,key3),data3);
+  printf("Inserting key: %d(index: %d)\tdata: %s\n",key3,hashFunction(17,key3),(char*)data3);
   insertData(hTable,key3,(void*)data3);
 
-  printf("Inserting key: %d(index: %d)\tdata: %s\n",key4,hashFunction(17,key4),data4);
+  printf("Inserting key: %d(index: %d)\tdata: %s\n",key4,hashFunction(17,key4),(char*)data4);
   insertData(hTable,key4,(void*)data4);
 
   printf("Inserting key: %d(index: %d)\tdata: %s\n",key5,hashFunction(17,key5),data5);
   insertData(hTable,key5,(void*)data5);
 
   //look up the data
-  printf("\nLooking for data of key: %d\t data returned: %s\n",key2,lookupData(hTable,key2));
-  printf("Looking for data of key: %d\t data returned: %s\n",key3,lookupData(hTable,key3));
+  printf("\nLooking for data of key: %d\t data returned: %s\n",key2,(char*)lookupData(hTable,key2));
+  printf("Looking for data of key: %d\t data returned: %s\n",key3,(char*)lookupData(hTable,key3));
 
   //overwrite the data in a node
-  printf("\nOverwrite data at key: %d(index: %d)\tdata: %s\n",key6,hashFunction(17,key6),data6);
+  printf("\nOverwrite data at key: %d(index: %d)\tdata: %s\n",key6,hashFunction(17,key6),(char*)data6);
   insertData(hTable,key6,(void*)data6);
 
   //look up the data
-  printf("Looking for data of key: %d\t data returned: %s\n",key6,lookupData(hTable,key6));
-
-  printf("destroying key: %d\n",key6);
-  removeData(hTable,key6);
-  removeData(hTable,23423);
-  printf("Looking for data of key: %d\t data returned: %s\n",key6,lookupData(hTable,key6));
-  destroyTable(hTable);
-
-
-
+  printf("Looking for data of key: %d\t data returned: %s\n",key6,(char*)lookupData(hTable,key6));
 
   return 0;
 }

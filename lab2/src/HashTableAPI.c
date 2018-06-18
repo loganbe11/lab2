@@ -114,7 +114,7 @@ void removeData(HTable *hashTable, int key)
 
   int tableNumber = hashTable->hashFunction(hashTable->size,key);
   Node *nodeToSearch = hashTable->table[tableNumber];
-  Node *nodeToDelete;
+  Node *nodeToDelete = NULL;
   if(nodeToSearch ==NULL)
   {
     return;
